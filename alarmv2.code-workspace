@@ -1,0 +1,27 @@
+{
+	"folders": [
+		{
+			"path": "Main board"
+		},
+		{
+			"name": "Lift controller",
+			"path": "Lift controller"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.h": "cpp",
+			"deque": "cpp",
+			"iomanip": "cpp",
+			"locale": "cpp",
+			"ostream": "cpp",
+			"streambuf": "cpp",
+			"*.tcc": "cpp",
+			"bitset": "cpp",
+			"fstream": "cpp",
+			"istream_helpers": "cpp",
+			"ostream_helpers": "cpp",
+			"*.xbm": "cpp"
+		}
+	}
+}
