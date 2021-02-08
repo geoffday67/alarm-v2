@@ -13,6 +13,10 @@ TimeEvent::TimeEvent(time_t time): Event(EVENT_TIME) {
     this->time = time;
 }
 
+AlarmEvent::AlarmEvent(time_t time): Event(EVENT_ALARM) {
+    this->time = time;
+}
+
 /*****************************************************************************/
 /*****************************************************************************/
 RegisteredReceiver::RegisteredReceiver(EventReceiver *per, int type) {
@@ -47,6 +51,15 @@ void classEventManager::removeListener(EventReceiver *per) {
 /*****************************************************************************/
 void classEventManager::queueEvent (Event* pevent) {
     queueEvents.push(pevent);
+}
+
+/*****************************************************************************/
+void classEventManager::emptyQueue() {
+    while (!queueEvents.empty()) {
+        Event* pevent = queueEvents.front();
+        queueEvents.pop();
+        delete pevent;
+    }
 }
 
 /*****************************************************************************/

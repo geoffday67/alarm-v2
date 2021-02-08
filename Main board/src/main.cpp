@@ -11,6 +11,7 @@
 #include "Pins.h"
 #include "NetworkManager.h"
 #include "Timer.h"
+#include "Light.h"
 
 RTC_DS3231 rtc;
 time_t lastTime = 0;
@@ -62,6 +63,12 @@ void setup() {
     Serial.println("Error starting RTC");
   }
 
+  time_t utc = rtc.now().unixtime();
+  time_t localTime = UK.toLocal(utc);
+  AlarmManager.initialise(localTime);
+  lastTime = utc;
+  Serial.println("Alarm manager started");
+
   // Initialise keypad
   pinMode (KEYPAD_AVAILABLE, INPUT);
   attachInterrupt(KEYPAD_AVAILABLE, handleKeypad, RISING);
@@ -78,18 +85,6 @@ void loop() {
     keyPressed = -1;
   }
 
-  /*if (keyPressed == 2 && !sent) {
-    byte command1[] = {0x7E, 0xFF, 0x06, 0x06, 0x00, 0x00, 0x14, 0xEF};
-    Serial1.write(command1, 8);
-    delay(100);
-    byte command2[] = {0x7E, 0xFF, 0x06, 0x03, 0x00, 0x00, 0x01, 0xEF};
-    Serial1.write(command2, 8);
-    Serial.println("Command sent");
-    sent = true;
-  } else if (keyPressed == 1) {
-    sent = false;
-  }*/
-
   // If the time in seconds is different from last time then send a time event
   time_t utc = rtc.now().unixtime();
   if (utc != lastTime) {
@@ -97,6 +92,8 @@ void loop() {
     AlarmManager.setCurrentTime(localTime);
     EventManager.queueEvent(new TimeEvent(localTime));
     lastTime = utc;
+
+    Light.loop();
 
     // If it's 3AM now and it wasn't last time then start an NTP session
     DateTime dt = DateTime(localTime);

@@ -1,20 +1,18 @@
-#include "WifiSettings.h"
 #include "MainScreen.h"
-#include "NetworkManager.h"
+#include "AlarmManager.h"
+#include "Tune.h"
 
-classWifiSettings WifiSettings;
+classTune Tune;
 
-void classWifiSettings::activate() {
+void classTune::activate() {
     EventManager.addListener(EVENT_KEY, this);
 
     Output.clear();
-    Output.addTitle("WiFi");
+    Output.addTitle("Tune");
     Output.addFooter("*=Back", "");
     Output.setSize(FONT_SMALL);
 
-    char ssid[32];
-    NetworkManager.getSSID(ssid);
-    bool enabled = NetworkManager.getEnabled();
+    int tune = AlarmManager.getTune();
 
     int dy = Output.getCharHeight();
     int starty = dy * 6 / 5;
@@ -22,34 +20,34 @@ void classWifiSettings::activate() {
 
     y = starty;
 
-    if (enabled && !strcmp(ssid, "Wario")) {
-        Output.addText(0, y, "1>Wario");
+    if (tune == 1) {
+        Output.addText(0, y, "1>Beautiful");
     } else {
-        Output.addText(0, y, "1 Wario");
+        Output.addText(0, y, "1 Beautiful");
     }
     y += dy;
-    if (enabled && !strcmp(ssid, "HobbyHouse")) {
-        Output.addText(0, y, "2>HobbyHouse");
+    if (tune == 2) {
+        Output.addText(0, y, "2>Broken");
     } else {
-        Output.addText(0, y, "2 HobbyHouse");
+        Output.addText(0, y, "2 Broken");
     }
     y += dy;
 
     y = starty;
-    if (!enabled) {
-        Output.addText(64, y, "3>Off");
+    if (tune == 3) {
+        Output.addText(82, y, "3>Good");
     } else {
-        Output.addText(64, y, "3 Off");
+        Output.addText(82, y, "3 Good");
     }
 
     Output.flush();
 }
 
-void classWifiSettings::deactivate() {
+void classTune::deactivate() {
     EventManager.removeListener(this);
 }
 
-void classWifiSettings::onEvent(Event* pevent) {
+void classTune::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_KEY:
             handleKeyEvent((KeyEvent*) pevent);
@@ -57,24 +55,22 @@ void classWifiSettings::onEvent(Event* pevent) {
     }
 }
 
-void classWifiSettings::handleKeyEvent(KeyEvent *pevent) {
+void classTune::handleKeyEvent(KeyEvent *pevent) {
     switch (pevent->key) {
         case KEY_1:
-            NetworkManager.setSSID("Wario", "mansion1");
-            NetworkManager.enable();
+            AlarmManager.setTune(1);
             MainScreen.activate();
             this->deactivate();
             break;
 
         case KEY_2:
-            NetworkManager.setSSID("HobbyHouse", "mansion1");
-            NetworkManager.enable();
+            AlarmManager.setTune(2);
             MainScreen.activate();
             this->deactivate();
             break;
 
         case KEY_3:
-            NetworkManager.disable();
+            AlarmManager.setTune(3);
             MainScreen.activate();
             this->deactivate();
             break;

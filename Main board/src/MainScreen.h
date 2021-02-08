@@ -7,14 +7,15 @@
 
 class classMainScreen: public Screen, EventReceiver {
 public:
-    virtual void activate();
-    virtual void deactivate();
+    virtual void onActivate();
+    virtual void onDeactivate();
     virtual void onEvent(Event* pevent);
 
 private:
     time_t currentTime;
     void handleTimeEvent (TimeEvent *pevent);
     void handleKeyEvent (KeyEvent *pevent);
+    void handleAlarmEvent (AlarmEvent *pevent);
     void showTime();
     void showAlarmTime();
     void toggleAlarm();

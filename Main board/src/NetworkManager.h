@@ -22,6 +22,8 @@ private:
 public:
     classNetworkManager();
     void setSSID(const char* pssid, const char *ppassword);
+    void getSSID(char *pssid);
+    bool getEnabled();
     void enable();
     void disable();
     void kettleOn();

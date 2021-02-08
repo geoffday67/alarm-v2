@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "PlatformIO",
+			"task": "Upload",
+			"problemMatcher": [
+				"$platformio"
+			],
+			"label": "PlatformIO: Upload",
+			"presentation": {
+				"focus": true
+			}
+		},
+		{
+			"type": "PlatformIO",
+			"task": "Monitor",
+			"problemMatcher": [
+				"$platformio"
+			],
+			"label": "PlatformIO: Monitor",
+			"presentation": {
+				"focus": true
+			}
+		}
+	]
+}

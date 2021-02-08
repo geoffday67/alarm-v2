@@ -5,29 +5,37 @@
 
 class classAlarmManager {
 private:
-    int hour;
-    int minute;
+    int hour, minute;
     bool enabled;
-    time_t snoozeTime;
-    time_t currentTime;
+    time_t currentTime, previousTime, wakeTime, snoozeTime, alarmTime;
+    int tune;
 
-    static void startAlarm();
-    static void stopAlarm();
+    void calculateWakeTime();
+    void playTune();
+    void stopTune();
+
+    void setSnoozeTime(time_t time);
+    void setWakeTime(time_t time);
+    void setAlarmTime(time_t time);
 
 public:
     classAlarmManager();
+    void initialise(time_t time);
     void setAlarm(int hour, int minute);
-    bool isAlarmSet();
+    void getAlarm(int &hour, int &minute);
+    bool isEnabled();
     bool isSnoozing();
-    time_t getAlarmTime();
+    bool isWakeTime();
+    bool isSounding();
     void setCurrentTime(time_t time);
     time_t getCurrentTime();
     void enableAlarm();
     void disableAlarm();
-    void snoozeAlarm(int minutes);
-    void resetSnooze();
     void alarmOn();
     void alarmOff();
+    void alarmSnooze(int minutes);
+    void setTune(int index);
+    int getTune();
 };
 
 extern classAlarmManager AlarmManager;

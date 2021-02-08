@@ -7,8 +7,6 @@
 #define KEYPAD_D          14
 #define KEYPAD_AVAILABLE  15
 
-#define ALARM_PIN         0
-
 #define LIGHT_LEVEL       A0
 
 /* I2C addresses

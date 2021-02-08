@@ -5,16 +5,6 @@
 classAlarmSet AlarmSet;
 
 void classAlarmSet::showEntry() {
-    /*char s [6];
-
-    s [0] = entry[0];
-    s [1] = entry[1];
-    s [2] = ':';
-    s [3] = entry[2];
-    s [4] = entry[3];
-    s [5] = 0;
-    Output.addText(CENTRED, 20, s);*/
-
     int x = startX;
 
     Output.setSize(FONT_TIME);
@@ -84,7 +74,6 @@ void classAlarmSet::handleKeyEvent(KeyEvent *pevent) {
                 AlarmManager.setAlarm(
                     (entry[0] - '0') * 10 + entry[1] - '0',
                     (entry[2] - '0') * 10 + entry[3] - '0');
-                AlarmManager.enableAlarm();
                 MainScreen.activate();
                 this->deactivate();
             }

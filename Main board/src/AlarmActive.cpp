@@ -2,12 +2,16 @@
 #include "MainScreen.h"
 #include "AlarmActive.h"
 #include "AlarmManager.h"
+#include "sunrise.xbm"
 
 classAlarmActive AlarmActive;
 
 void classAlarmActive::activate() {
     Output.clear();
-    Output.addTitle("Wake up!");
+    Output.drawBitmap(sunrise_bits);
+    Output.setSize(FONT_SMALL);
+    Output.addText(0, 0, "*=Off");
+    Output.addText(100, 0, "#=Zz");
     Output.flush();
 
     AlarmManager.alarmOn();
@@ -15,7 +19,6 @@ void classAlarmActive::activate() {
 }
 
 void classAlarmActive::deactivate() {
-    AlarmManager.alarmOff();
     EventManager.removeListener(this);
 }
 
@@ -28,6 +31,16 @@ void classAlarmActive::onEvent(Event* pevent) {
 }
 
 void classAlarmActive::handleKeyEvent(KeyEvent *pevent) {
-    MainScreen.activate();
-    this->deactivate();
+    switch (pevent->key) {
+        case KEY_HASH:
+            AlarmManager.alarmSnooze(1);
+            MainScreen.activate();
+            this->deactivate();
+            break;
+        case KEY_STAR:
+            AlarmManager.alarmOff();
+            MainScreen.activate();
+            this->deactivate();
+            break;
+    }
 }

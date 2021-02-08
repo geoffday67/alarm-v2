@@ -2,11 +2,12 @@
 #include "MainScreen.h"
 #include "Demo.h"
 #include "AlarmManager.h"
+#include "AlarmActive.h"
 #include "Settings.h"
 
 classMainScreen MainScreen;
 
-void classMainScreen::activate() {
+void classMainScreen::onActivate() {
     Output.clear();
     Output.addFooter("*=Alarm", "#=Options");
     Output.flush();
@@ -18,9 +19,10 @@ void classMainScreen::activate() {
 
     EventManager.addListener(EVENT_TIME, this);
     EventManager.addListener(EVENT_KEY, this);
+    EventManager.addListener(EVENT_ALARM, this);
 }
 
-void classMainScreen::deactivate() {
+void classMainScreen::onDeactivate() {
     EventManager.removeListener(this);
 }
 
@@ -32,6 +34,9 @@ void classMainScreen::onEvent(Event* pevent) {
         case EVENT_KEY:
             handleKeyEvent((KeyEvent*) pevent);
             break;
+        case EVENT_ALARM:
+            handleAlarmEvent((AlarmEvent*) pevent);
+            break;
     }
 }
 
@@ -42,18 +47,27 @@ void classMainScreen::handleTimeEvent (TimeEvent *pevent) {
 
 void classMainScreen::showTime() {
     tmElements_t elements;
+    int hour, minute;
     char text [32];
+
+    if (!active) {
+        return;
+    }
 
     breakTime(currentTime, elements);
     sprintf (text, "%02d:%02d:%02d", elements.Hour, elements.Minute, elements.Second);
     Output.setSize(FONT_TIME);
     Output.addText(CENTRED, 0, text);
 
-    if (AlarmManager.isAlarmSet()) {
-        breakTime(AlarmManager.getAlarmTime(), elements);
-        sprintf (text, "%02d:%02d", elements.Hour, elements.Minute);
+    if (AlarmManager.isSnoozing()) {
+        strcpy (text, " Zzz ");
     } else {
-        strcpy (text, "     ");
+        if (AlarmManager.isEnabled()) {
+            AlarmManager.getAlarm(hour, minute);
+            sprintf (text, "%02d:%02d", hour, minute);
+        } else {
+            strcpy (text, "     ");
+        }
     }
     Output.setSize(FONT_ALARM);
     Output.addText(CENTRED, 30, text);
@@ -62,7 +76,7 @@ void classMainScreen::showTime() {
 }
 
 void classMainScreen::toggleAlarm() {
-    if (AlarmManager.isAlarmSet()) {
+    if (AlarmManager.isEnabled()) {
         AlarmManager.disableAlarm();
     } else {
         AlarmManager.enableAlarm();
@@ -80,9 +94,10 @@ void classMainScreen::handleKeyEvent(KeyEvent *pevent) {
         case KEY_STAR:
             toggleAlarm();
             break;
-        case KEY_0:
-            Demo.activate();
-            this->deactivate();
-            break;
     }
+}
+
+void classMainScreen::handleAlarmEvent(AlarmEvent *pevent) {
+    AlarmActive.activate();
+    this->deactivate();
 }

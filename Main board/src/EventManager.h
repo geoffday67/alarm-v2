@@ -10,6 +10,7 @@
 #define EVENT_KEY       1
 #define EVENT_TIME      2
 #define EVENT_TIMER     3
+#define EVENT_ALARM     4
 
 /*****************************************************************************/
 class KeyEvent: public Event {
@@ -32,6 +33,13 @@ public:
 };
 
 /*****************************************************************************/
+class AlarmEvent: public Event {
+public:
+    AlarmEvent(time_t time);
+    time_t time;
+};
+
+/*****************************************************************************/
 class RegisteredReceiver {
 public:
     RegisteredReceiver(EventReceiver *per, int type);
@@ -47,6 +55,7 @@ public:
     void removeListener(EventReceiver *per);
     void queueEvent (Event* pevent);
     void processEvents();
+    void emptyQueue();
 
 private:
     std::queue<Event*> queueEvents;

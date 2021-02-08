@@ -36,6 +36,10 @@ class classOutput {
 private:
     int fontSize;
     int fontStyle;
+    bool blank;
+    uint8_t *pSnapshot;
+    U8G2_SSD1306_128X64_NONAME_F_SW_I2C *pdisplay;
+    int displayWidth, displayHeight;
 
 public:
     classOutput();
@@ -53,12 +57,9 @@ public:
     virtual int getDisplayWidth();
     virtual int getBufferSize();
     virtual void drawBitmap(void *pdata);
- 
-private:
-    U8G2_SSD1306_128X64_NONAME_F_SW_I2C *pdisplay;
-    int displayWidth, displayHeight;
+    virtual void setBlank(bool blank);
 };
-
+ 
 extern classOutput Output;
 
 #endif

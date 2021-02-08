@@ -20,7 +20,7 @@ classPersistent::classPersistent () {
         Serial.println("Writing default values to EEPROM");
         EEPROM.write(0, 'G');
         EEPROM.write(1, 'D');
-        storeAlarm(0, 0, false);
+        storeAlarm(0, 0, false, 1);
 
         uint8_t default_mac[] = {0, 0, 0, 0, 0, 0};
         storeWiFi("", "", default_mac, false);
@@ -31,23 +31,26 @@ struct AlarmSettings {
     int hour;
     int minute;
     bool enabled;
+    int tune;
 };
 
-void classPersistent::storeAlarm(int hour, int minute, bool enabled) {
+void classPersistent::storeAlarm(int hour, int minute, bool enabled, int tune) {
     struct AlarmSettings settings;
     settings.hour = hour;
     settings.minute = minute;
     settings.enabled = enabled;
+    settings.tune = tune;
     EEPROM.put(ALARM_ADDRESS, settings);
     EEPROM.commit();
 }
 
-void classPersistent::fetchAlarm(int &hour, int &minute, bool &enabled) {
+void classPersistent::fetchAlarm(int &hour, int &minute, bool &enabled, int &tune) {
     struct AlarmSettings settings;
     EEPROM.get(ALARM_ADDRESS, settings);
     hour = settings.hour;
     minute = settings.minute;
     enabled = settings.enabled;
+    tune = settings.tune;
 }
 
 struct WiFiSettings {

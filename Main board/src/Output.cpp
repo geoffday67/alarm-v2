@@ -20,7 +20,6 @@ void classOutput::begin() {
 
 void classOutput::clear() {
   pdisplay->clearBuffer();
-  //pdisplay->drawFrame(0, 0, displayWidth, displayHeight);
 }
 
 void classOutput::flush() {
@@ -61,7 +60,7 @@ void classOutput::setSize(int size) {
       pdisplay->setFont(u8g2_font_profont29_mn);
       break;
     case FONT_ALARM:
-      pdisplay->setFont(u8g2_font_profont22_mn);
+      pdisplay->setFont(u8g2_font_profont22_mr);
       break;
     case FONT_LARGE:
       pdisplay->setFont(u8g2_font_profont29_tr);
@@ -109,4 +108,17 @@ int classOutput::getBufferSize() {
 
 void classOutput::drawBitmap(void *pdata) {
   pdisplay->drawXBM(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (uint8_t*) pdata);
+}
+
+void classOutput::setBlank(bool blank) {
+  this->blank = blank;
+  if (blank) {
+    delete[] pSnapshot;
+    pSnapshot = new uint8_t[getBufferSize()];
+    memcpy(pSnapshot, pdisplay->getBufferPtr(), getBufferSize());
+    pdisplay->clearDisplay();
+  } else {
+    memcpy(pdisplay->getBufferPtr(), pSnapshot, getBufferSize());
+    pdisplay->sendBuffer();
+  }
 }

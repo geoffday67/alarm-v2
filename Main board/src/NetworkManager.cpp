@@ -103,7 +103,7 @@ void classNetworkManager::setSSID(const char* pssid, const char *ppassword) {
   strcpy (password, ppassword);
   enabled = true;
 
-  const uint8_t hobbyhouse_mac[] = {0x10, 0xFE, 0xED, 0xF2, 0xA0, 0x66};
+  const uint8_t hobbyhouse_mac[] = {0x9C, 0xC9, 0xEB, 0x4E, 0x1B, 0x32};
   const uint8_t wario_mac[] = {0xF0, 0x86, 0x20, 0x07, 0x53, 0x4C};
   if (!strcmp(ssid, "HobbyHouse")) {
     memcpy (mac, hobbyhouse_mac, 6);
@@ -114,6 +114,14 @@ void classNetworkManager::setSSID(const char* pssid, const char *ppassword) {
   }
 
   Persistent.storeWiFi(ssid, password, mac, enabled);
+}
+
+void classNetworkManager::getSSID(char *pssid) {
+  strcpy (pssid, ssid);
+}
+
+bool classNetworkManager::getEnabled() {
+  return enabled;
 }
 
 void classNetworkManager::kettleOn() {
