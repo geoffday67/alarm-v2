@@ -22,12 +22,13 @@ void classAlarmActive::deactivate() {
     EventManager.removeListener(this);
 }
 
-void classAlarmActive::onEvent(Event* pevent) {
+bool classAlarmActive::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_KEY:
             handleKeyEvent((KeyEvent*) pevent);
             break;
     }
+    return true;
 }
 
 void classAlarmActive::handleKeyEvent(KeyEvent *pevent) {

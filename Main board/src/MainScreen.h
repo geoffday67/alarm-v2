@@ -9,7 +9,7 @@ class classMainScreen: public Screen, EventReceiver {
 public:
     virtual void onActivate();
     virtual void onDeactivate();
-    virtual void onEvent(Event* pevent);
+    virtual bool onEvent(Event* pevent);
 
 private:
     time_t currentTime;

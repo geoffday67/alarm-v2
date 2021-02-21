@@ -9,7 +9,7 @@ class classWifiSettings: public Screen, EventReceiver {
 public:
     virtual void activate();
     virtual void deactivate();
-    virtual void onEvent(Event* pevent);
+    virtual bool onEvent(Event* pevent);
 
 private:
     void handleKeyEvent(KeyEvent *pevent);

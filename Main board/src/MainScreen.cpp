@@ -26,7 +26,7 @@ void classMainScreen::onDeactivate() {
     EventManager.removeListener(this);
 }
 
-void classMainScreen::onEvent(Event* pevent) {
+bool classMainScreen::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_TIME:
             handleTimeEvent((TimeEvent*) pevent);
@@ -38,6 +38,7 @@ void classMainScreen::onEvent(Event* pevent) {
             handleAlarmEvent((AlarmEvent*) pevent);
             break;
     }
+    return true;
 }
 
 void classMainScreen::handleTimeEvent (TimeEvent *pevent) {

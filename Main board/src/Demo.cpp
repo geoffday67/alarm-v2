@@ -15,12 +15,13 @@ void classDemo::deactivate() {
     EventManager.removeListener(this);
 }
 
-void classDemo::onEvent(Event* pevent) {
+bool classDemo::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_KEY:
             handleKeyEvent((KeyEvent*) pevent);
             break;
     }
+    return true;
 }
 
 void classDemo::handleKeyEvent(KeyEvent *pevent) {

@@ -17,6 +17,9 @@ AlarmEvent::AlarmEvent(time_t time): Event(EVENT_ALARM) {
     this->time = time;
 }
 
+InactivityEvent::InactivityEvent(): Event(EVENT_INACTIVITY) {
+}
+
 /*****************************************************************************/
 /*****************************************************************************/
 RegisteredReceiver::RegisteredReceiver(EventReceiver *per, int type) {
@@ -79,7 +82,9 @@ void classEventManager::processEvents() {
         vector<RegisteredReceiver>::const_iterator i;
         for (i = receivers.begin(); i != receivers.end(); i++) {
             if (i->type == pevent->type) {
-                i->pEventReceiver->onEvent(pevent);
+                if (!i->pEventReceiver->onEvent(pevent)) {
+                    break;
+                }
             }
         }
 

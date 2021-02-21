@@ -58,6 +58,7 @@ public:
     virtual int getBufferSize();
     virtual void drawBitmap(void *pdata);
     virtual void setBlank(bool blank);
+    virtual void enable (bool enabled);
 };
  
 extern classOutput Output;

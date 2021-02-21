@@ -5,7 +5,8 @@
 
 class EventReceiver {
 public:
-    virtual void onEvent(Event* pevent) = 0;
+    // Handle event, return whether to continue (false stops further receivers).
+    virtual bool onEvent(Event* pevent) = 0;
 };
 
 #endif

@@ -47,12 +47,13 @@ void classTune::deactivate() {
     EventManager.removeListener(this);
 }
 
-void classTune::onEvent(Event* pevent) {
+bool classTune::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_KEY:
             handleKeyEvent((KeyEvent*) pevent);
             break;
     }
+    return true;
 }
 
 void classTune::handleKeyEvent(KeyEvent *pevent) {

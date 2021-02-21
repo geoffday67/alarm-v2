@@ -13,11 +13,15 @@
 #include "Timer.h"
 #include "Light.h"
 
+#define INACTIVITY_MS   5000
+
 RTC_DS3231 rtc;
 time_t lastTime = 0;
 int keyPressed = -1;
 bool sent = false;
 int lastHour = 0;
+time_t lastKey;
+bool active;
 
 TimeChangeRule BST = {"BST", Last, Sun, Mar, 1, 60}; //British Summer Time
 TimeChangeRule GMT = {"GMT", Last, Sun, Oct, 2, 0};  //Standard Time
@@ -69,6 +73,12 @@ void setup() {
   lastTime = utc;
   Serial.println("Alarm manager started");
 
+  // Initialise light level monitoring
+  lastKey = millis();
+  active = true;
+  Light.initialise();
+  Serial.println("Light level started");
+
   // Initialise keypad
   pinMode (KEYPAD_AVAILABLE, INPUT);
   attachInterrupt(KEYPAD_AVAILABLE, handleKeypad, RISING);
@@ -78,11 +88,20 @@ void setup() {
 
 void loop() {
   TimerManager.loop();
+  Light.loop();
   
+  // Check for key inactivity
+  if (active && millis() - lastKey > INACTIVITY_MS) {
+    active = false;
+    EventManager.queueEvent(new InactivityEvent());
+  }
+
   // Check for a key press and send a key event
   if (keyPressed != -1) {
     EventManager.queueEvent(new KeyEvent(keyPressed));
     keyPressed = -1;
+    lastKey = millis();
+    active = true;
   }
 
   // If the time in seconds is different from last time then send a time event
@@ -92,8 +111,6 @@ void loop() {
     AlarmManager.setCurrentTime(localTime);
     EventManager.queueEvent(new TimeEvent(localTime));
     lastTime = utc;
-
-    Light.loop();
 
     // If it's 3AM now and it wasn't last time then start an NTP session
     DateTime dt = DateTime(localTime);

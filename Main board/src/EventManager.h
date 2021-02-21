@@ -7,10 +7,10 @@
 #include "Event.h"
 #include "EventReceiver.h"
 
-#define EVENT_KEY       1
-#define EVENT_TIME      2
-#define EVENT_TIMER     3
-#define EVENT_ALARM     4
+#define EVENT_KEY           1
+#define EVENT_TIME          2
+#define EVENT_ALARM         3
+#define EVENT_INACTIVITY    4
 
 /*****************************************************************************/
 class KeyEvent: public Event {
@@ -27,9 +27,9 @@ public:
 };
 
 /*****************************************************************************/
-class TimerEvent: public Event {
+class InactivityEvent: public Event {
 public:
-    TimerEvent();
+    InactivityEvent();
 };
 
 /*****************************************************************************/

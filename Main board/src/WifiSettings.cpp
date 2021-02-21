@@ -49,12 +49,13 @@ void classWifiSettings::deactivate() {
     EventManager.removeListener(this);
 }
 
-void classWifiSettings::onEvent(Event* pevent) {
+bool classWifiSettings::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_KEY:
             handleKeyEvent((KeyEvent*) pevent);
             break;
     }
+    return true;
 }
 
 void classWifiSettings::handleKeyEvent(KeyEvent *pevent) {

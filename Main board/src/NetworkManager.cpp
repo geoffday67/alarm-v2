@@ -1,12 +1,17 @@
 #include "NetworkManager.h"
 #include "Persistent.h"
 #include "RTClib.h"
+#include <ArduinoHttpClient.h>
 
 #define MQTT_SERVER     "geoffs-mac-mini.local"
 #define MQTT_PORT       1883
 #define MQTT_CLIENT     "alarmv2"
 #define KETTLE_TOPIC    "alarm/kettle"
 #define NTP_TOPIC       "alarm/ntp"
+
+#define KETTLE_HOST     "192.168.1.5"
+#define KETTLE_PORT     1968
+#define KETTLE_URI      "/interface"
 
 #define NTP_SERVER        "time.google.com"
 #define NTP_PORT          123
@@ -127,14 +132,26 @@ bool classNetworkManager::getEnabled() {
 void classNetworkManager::kettleOn() {
   if (!connectWiFi()) {
     Serial.println("Error connecting WiFi");
-    goto Exit;
+    return;
   }
 
-  if (mqtt.connect(MQTT_CLIENT)) {
-    mqtt.publish(KETTLE_TOPIC, "on");
-    Serial.println("MQTT kettle topic published");
-    mqtt.disconnect();
-  }
+  HttpClient client = HttpClient(wifi, KETTLE_HOST, KETTLE_PORT);
+  char body[] = "operation=433&channel=3&command=on";
+  int status;
+
+  //strcpy (body, "operation=433&channel=3&command=on");
+  Serial.printf ("Sending: %s\n", body);
+
+  client.beginRequest();
+  client.post(KETTLE_URI);
+  client.sendHeader("Content-Type", "application/x-www-form-urlencoded");
+  client.sendHeader("Content-Length", strlen(body));
+  client.sendBasicAuth("wario", "mansion1");
+  client.beginBody();
+  client.print(body);
+  client.endRequest();
+
+  Serial.printf ("Received code %d: %s\n", client.responseStatusCode(), client.responseBody().c_str());
 
 Exit:
   disconnectWiFi();

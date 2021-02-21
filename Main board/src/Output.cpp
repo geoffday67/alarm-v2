@@ -122,3 +122,7 @@ void classOutput::setBlank(bool blank) {
     pdisplay->sendBuffer();
   }
 }
+
+void classOutput::enable(bool enabled) {
+  pdisplay->setPowerSave(!enabled);
+}

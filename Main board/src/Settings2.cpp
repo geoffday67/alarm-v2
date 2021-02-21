@@ -28,12 +28,13 @@ void classSettings2::deactivate() {
     EventManager.removeListener(this);
 }
 
-void classSettings2::onEvent(Event* pevent) {
+bool classSettings2::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_KEY:
             handleKeyEvent((KeyEvent*) pevent);
             break;
     }
+    return true;
 }
 
 void classSettings2::handleKeyEvent(KeyEvent *pevent) {

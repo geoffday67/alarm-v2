@@ -42,12 +42,13 @@ void classAlarmSet::deactivate() {
     EventManager.removeListener(this);
 }
 
-void classAlarmSet::onEvent(Event* pevent) {
+bool classAlarmSet::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_KEY:
             handleKeyEvent((KeyEvent*) pevent);
             break;
     }
+    return true;
 }
 
 void classAlarmSet::handleKeyEvent(KeyEvent *pevent) {

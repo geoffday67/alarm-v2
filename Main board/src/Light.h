@@ -1,11 +1,18 @@
 #ifndef __LIGHT__
 #define __LIGHT__
 
-class classLight {
+#include "EventManager.h"
+#include "EventReceiver.h"
+
+class classLight: public EventReceiver {
 public:
+    void initialise();
     void loop();
+    virtual bool onEvent(Event* pevent);
 
 private:
+    bool isDark, keypadActive, stateChanged;
+    void processState();
 };
 
 extern classLight Light;
