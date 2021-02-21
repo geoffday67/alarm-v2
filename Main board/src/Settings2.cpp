@@ -1,7 +1,7 @@
 #include "Settings2.h"
 #include "MainScreen.h"
 #include "NetworkManager.h"
-#include "Tune.h"
+#include "AlarmActive.h"
 
 classSettings2 Settings2;
 
@@ -19,7 +19,7 @@ void classSettings2::activate() {
 
     y = starty;
     Output.addText(0, y, "1 Sync time"); y += dy;
-    Output.addText(0, y, "2 Tune"); y += dy;
+    Output.addText(0, y, "2 Demo"); y += dy;
 
     Output.flush();
 }
@@ -52,7 +52,7 @@ void classSettings2::handleKeyEvent(KeyEvent *pevent) {
             break;
 
         case KEY_2:
-            Tune.activate();
+            AlarmActive.activate();
             this->deactivate();
             break;
     }

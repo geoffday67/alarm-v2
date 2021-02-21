@@ -69,9 +69,10 @@ void classLight::processState() {
         return;
     }
 
-    Serial.printf("Light state: %s, %s\n",
+    Serial.printf("Light state: %s, %s, %s\n",
         isDark ? "dark" : "light",
-        keypadActive ? "active" : "inactive");
+        keypadActive ? "active" : "inactive",
+        alarmSounding ? "alarm on" : "alarm off");
 
     // If it's light or the alarm is sounding then always show the display.
     if (!isDark || alarmSounding) {

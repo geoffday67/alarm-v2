@@ -4,7 +4,7 @@
 #include "AlarmSet.h"
 #include "WifiSettings.h"
 #include "NetworkManager.h"
-#include "AlarmActive.h"
+#include "Tune.h"
 
 classSettings Settings;
 
@@ -25,7 +25,7 @@ void classSettings::activate() {
     Output.addText(0, y, "2 Kettle"); y += dy;
 
     y = starty;
-    Output.addText(64, y, "3 Demo"); y += dy;
+    Output.addText(64, y, "3 Tune"); y += dy;
     Output.addText(64, y, "4 WiFi"); y += dy;
 
     Output.flush();
@@ -69,7 +69,7 @@ void classSettings::handleKeyEvent(KeyEvent *pevent) {
             break;
 
         case KEY_3:
-            AlarmActive.activate();
+            Tune.activate();
             this->deactivate();
             break;
 
