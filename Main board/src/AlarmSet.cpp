@@ -23,11 +23,11 @@ void classAlarmSet::activate() {
     Output.clear();
     Output.addTitle("Set Alarm");
     Output.addFooter("*=Back", "");
-    Output.setSize(FONT_MEDIUM);
+    Output.setSize(FONT_TIME);
     Output.flush();
 
     int cw = Output.getCharWidth();    
-    dX = cw * 3 / 2;
+    dX = cw;
     startX = (Output.getDisplayWidth() - (dX * 5) - (cw  / 2)) / 2;
     startY = 21;
 
