@@ -9,7 +9,7 @@ classMainScreen MainScreen;
 
 void classMainScreen::onActivate() {
     Output.clear();
-    Output.addFooter("*=Alarm", "#=Options");
+    Output.addFooter("*=Alarm", "#=Set");
     Output.flush();
 
     currentTime = AlarmManager.getCurrentTime();
