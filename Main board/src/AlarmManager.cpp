@@ -3,6 +3,7 @@
 #include "Pins.h"
 #include "Timer.h"
 #include "EventManager.h"
+#include "Light.h"
 
 /*
 Wake time - time at which regular alarm is due.
@@ -125,6 +126,10 @@ void classAlarmManager::alarmSnooze(int minutes) {
     setSnoozeTime (alarmTime + (minutes * SECS_PER_MIN));
 }
 
+void classAlarmManager::snoozeOff() {
+    setSnoozeTime(0);
+}
+
 bool classAlarmManager::isSnoozing() {
     return snoozeTime != 0;
 }
@@ -160,11 +165,13 @@ int classAlarmManager::getTune() {
 }
 
 void classAlarmManager::playTune() {
+    Light.setAlarmSounding(true);
     Serial1.write((char) (0x30 + tune));
     Serial.printf("Playing tune %d\n", tune);
 }
 
 void classAlarmManager::stopTune() {
+    Light.setAlarmSounding(false);
     Serial1.write('d');
     Serial.println("Stopping tune");
 }

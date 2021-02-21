@@ -20,13 +20,18 @@ void classLight::initialise() {
     processState();
 }
 
+void classLight::setAlarmSounding(bool sounding) {
+    alarmSounding = sounding;
+    stateChanged = true;
+}
+
 bool classLight::onEvent(Event* pevent) {
     switch (pevent->type) {
         case EVENT_KEY:
             if (!keypadActive) {
                 keypadActive = true;
                 stateChanged = true;
-                if (isDark) {
+                if (isDark && !alarmSounding) {
                     return false;
                 }
             }
@@ -68,13 +73,14 @@ void classLight::processState() {
         isDark ? "dark" : "light",
         keypadActive ? "active" : "inactive");
 
-    // If it's light then always show the display.
-    if (!isDark) {
+    // If it's light or the alarm is sounding then always show the display.
+    if (!isDark || alarmSounding) {
         Output.enable(true);
         goto Exit;
     }
 
-    // It's dark, whether to show the display depends on whether the keyboard is active.
+    // It's dark and the alarm isn't sounding,
+    // whether to show the display depends on whether the keyboard is active.
     Output.enable(keypadActive);
 
 Exit:

@@ -26,7 +26,6 @@ public:
     bool isEnabled();
     bool isSnoozing();
     bool isWakeTime();
-    bool isSounding();
     void setCurrentTime(time_t time);
     time_t getCurrentTime();
     void enableAlarm();
@@ -34,6 +33,7 @@ public:
     void alarmOn();
     void alarmOff();
     void alarmSnooze(int minutes);
+    void snoozeOff();
     void setTune(int index);
     int getTune();
 };

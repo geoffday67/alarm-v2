@@ -77,10 +77,14 @@ void classMainScreen::showTime() {
 }
 
 void classMainScreen::toggleAlarm() {
-    if (AlarmManager.isEnabled()) {
-        AlarmManager.disableAlarm();
+    if (AlarmManager.isSnoozing()) {
+        AlarmManager.snoozeOff();
     } else {
-        AlarmManager.enableAlarm();
+        if (AlarmManager.isEnabled()) {
+            AlarmManager.disableAlarm();
+        } else {
+            AlarmManager.enableAlarm();
+        }
     }
 
     showTime();
