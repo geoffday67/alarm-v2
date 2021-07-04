@@ -13,6 +13,7 @@ private:
     void calculateWakeTime();
     void playTune();
     void stopTune();
+    void muteTune();
 
     void setSnoozeTime(time_t time);
     void setWakeTime(time_t time);
@@ -30,6 +31,7 @@ public:
     time_t getCurrentTime();
     void enableAlarm();
     void disableAlarm();
+    void muteAlarm();
     void alarmOn();
     void alarmOff();
     void alarmSnooze(int minutes);

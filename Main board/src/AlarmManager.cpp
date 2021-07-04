@@ -121,6 +121,10 @@ void classAlarmManager::alarmOff() {
     setSnoozeTime(0);
 }
 
+void classAlarmManager::muteAlarm() {
+    muteTune();
+}
+
 void classAlarmManager::alarmSnooze(int minutes) {
     stopTune();
     setSnoozeTime (alarmTime + (minutes * SECS_PER_MIN));
@@ -174,4 +178,9 @@ void classAlarmManager::stopTune() {
     Light.setAlarmSounding(false);
     Serial1.write('d');
     Serial.println("Stopping tune");
+}
+
+void classAlarmManager::muteTune() {
+    Serial1.write('m');
+    Serial.println("Muting tune");
 }

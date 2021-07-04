@@ -6,14 +6,18 @@
 
 classAlarmActive AlarmActive;
 
-void classAlarmActive::activate() {
+void classAlarmActive::showScreen() {
     Output.clear();
     Output.drawBitmap(sunrise_bits);
     Output.setSize(FONT_SMALL);
-    Output.addText(0, 0, "*=Off");
+    Output.addText(0, 0, muted ? "*=Off" : "*=Shh");
     Output.addText(100, 0, "#=Zz");
     Output.flush();
+}
 
+void classAlarmActive::activate() {
+    muted = false;
+    showScreen();
     AlarmManager.alarmOn();
     EventManager.addListener(EVENT_KEY, this);
 }
@@ -38,10 +42,17 @@ void classAlarmActive::handleKeyEvent(KeyEvent *pevent) {
             MainScreen.activate();
             this->deactivate();
             break;
+
         case KEY_STAR:
-            AlarmManager.alarmOff();
-            MainScreen.activate();
-            this->deactivate();
+            if (muted) {
+                AlarmManager.alarmOff();
+                MainScreen.activate();
+                this->deactivate();
+            } else {
+                AlarmManager.muteAlarm();
+                muted = true;
+                showScreen();
+            }
             break;
     }
 }

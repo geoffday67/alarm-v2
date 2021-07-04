@@ -13,6 +13,8 @@ public:
 
 private:
     void handleKeyEvent(KeyEvent *pevent);
+    bool muted;
+    void showScreen();
 };
 
 extern classAlarmActive AlarmActive;
