@@ -10,6 +10,7 @@ public:
     void loop();
     void setAlarmSounding(bool sounding);
     virtual bool onEvent(Event* pevent);
+    int getLevel();
 
 private:
     bool isDark, keypadActive, alarmSounding, stateChanged;

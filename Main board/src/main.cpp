@@ -13,7 +13,7 @@
 #include "Timer.h"
 #include "Light.h"
 
-#define INACTIVITY_MS   5000
+#define INACTIVITY_MS   10000
 
 RTC_DS3231 rtc;
 time_t lastTime = 0;

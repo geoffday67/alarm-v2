@@ -3,8 +3,8 @@
 #include "Light.h"
 #include "Output.h"
 
-#define DARK_THRESHOLD      300
-#define LIGHT_THRESHOLD     600
+#define DARK_THRESHOLD      50
+#define LIGHT_THRESHOLD     150
 
 classLight Light;
 
@@ -86,4 +86,8 @@ void classLight::processState() {
 
 Exit:
     stateChanged = false;
+}
+
+int classLight::getLevel() {
+    return analogRead(LIGHT_LEVEL);
 }

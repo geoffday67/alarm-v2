@@ -81,11 +81,11 @@ void classNetworkManager::syncTime() {
 
   dt = DateTime(unixTime);
   rtc.adjust(dt);
-  sprintf (s, "RTC adjusted to %s UTC\n", dt.timestamp(DateTime::TIMESTAMP_TIME).c_str());
+  sprintf (s, "RTC adjusted to %s UTC\n", dt.timestamp(DateTime::TIMESTAMP_FULL).c_str());
   Serial.printf(s);
 
   if (mqtt.connect(MQTT_CLIENT)) {
-    mqtt.publish(NTP_TOPIC, s);
+    mqtt.publish(NTP_TOPIC, s, true);
     mqtt.disconnect();
   }
 

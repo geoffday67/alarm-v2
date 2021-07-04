@@ -34,7 +34,7 @@ bool classAlarmActive::onEvent(Event* pevent) {
 void classAlarmActive::handleKeyEvent(KeyEvent *pevent) {
     switch (pevent->key) {
         case KEY_HASH:
-            AlarmManager.alarmSnooze(1);
+            AlarmManager.alarmSnooze(5);
             MainScreen.activate();
             this->deactivate();
             break;

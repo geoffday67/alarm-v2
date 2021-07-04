@@ -2,6 +2,7 @@
 #include "MainScreen.h"
 #include "NetworkManager.h"
 #include "AlarmActive.h"
+#include "LightSetting.h"
 
 classSettings2 Settings2;
 
@@ -18,8 +19,11 @@ void classSettings2::activate() {
     int y;
 
     y = starty;
-    Output.addText(0, y, "1 Sync time"); y += dy;
+    Output.addText(0, y, "1 Sync"); y += dy;
     Output.addText(0, y, "2 Demo"); y += dy;
+
+    y = starty;
+    Output.addText(72, y, "3 Light"); y += dy;
 
     Output.flush();
 }
@@ -53,6 +57,11 @@ void classSettings2::handleKeyEvent(KeyEvent *pevent) {
 
         case KEY_2:
             AlarmActive.activate();
+            this->deactivate();
+            break;
+
+        case KEY_3:
+            LightSetting.activate();
             this->deactivate();
             break;
     }

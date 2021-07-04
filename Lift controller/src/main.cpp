@@ -29,7 +29,6 @@ int alarmTrack, alarmVolume;
 long trackFinishedTime;
 bool movingDown = false;
 bool movingUp = false;
-long stallStart;
 int soundState;
 
 /*
@@ -154,11 +153,14 @@ void startAlarm(int track) {
   startUp();
 }
 
-void stopAlarm() {
+void stopAlarmNoDown() {
   alarmOn = false;
   soundSetState(SOUND_IDLE);
-
   stopSound();
+}
+
+void stopAlarm() {
+  stopAlarmNoDown();
   startDown();
 }
 
@@ -261,10 +263,10 @@ void loop() {
     startAlarm(command - '0');
   } else if (command == 'u') {
     startUp();
-    stallStart = 0;
   } else if (command == 'd') {
     stopAlarm();
-    stallStart = 0;
+  } else if (command == 'm') {
+    stopAlarmNoDown();
   } else if (command == 's') {
     stopMotor();
   }
