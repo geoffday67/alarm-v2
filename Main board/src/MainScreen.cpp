@@ -56,7 +56,7 @@ void classMainScreen::showTime() {
     }
 
     breakTime(currentTime, elements);
-    sprintf (text, "%02d:%02d:%02d", elements.Hour, elements.Minute, elements.Second);
+    sprintf (text, "%02d:%02d", elements.Hour, elements.Minute);
     Output.setSize(FONT_TIME);
     Output.addText(CENTRED, 0, text);
 
@@ -71,7 +71,7 @@ void classMainScreen::showTime() {
         }
     }
     Output.setSize(FONT_ALARM);
-    Output.addText(CENTRED, 30, text);
+    Output.addText(CENTRED, 38, text);
 
     Output.flush();
 }

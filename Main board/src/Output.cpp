@@ -57,7 +57,7 @@ void classOutput::setSize(int size) {
 
   switch (size) {
     case FONT_TIME:
-      pdisplay->setFont(u8g2_font_profont29_mn);
+      pdisplay->setFont(u8g2_font_inb30_mn);
       break;
     case FONT_ALARM:
       pdisplay->setFont(u8g2_font_profont22_mr);
