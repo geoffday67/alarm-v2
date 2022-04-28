@@ -9,7 +9,6 @@ class classNetworkManager {
 private:
     char ssid[32];
     char password[32];
-    uint8_t mac[6];
     bool enabled;
     WiFiClient wifi;
     PubSubClient mqtt;

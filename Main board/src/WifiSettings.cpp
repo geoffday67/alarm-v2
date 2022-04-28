@@ -28,19 +28,12 @@ void classWifiSettings::activate() {
         Output.addText(0, y, "1 Wario");
     }
     y += dy;
-    if (enabled && !strcmp(ssid, "HobbyHouse")) {
-        Output.addText(0, y, "2>HobbyHouse");
+    if (!enabled) {
+        Output.addText(0, y, "2>Off");
     } else {
-        Output.addText(0, y, "2 HobbyHouse");
+        Output.addText(0, y, "2 Off");
     }
     y += dy;
-
-    y = starty;
-    if (!enabled) {
-        Output.addText(64, y, "3>Off");
-    } else {
-        Output.addText(64, y, "3 Off");
-    }
 
     Output.flush();
 }
@@ -68,13 +61,6 @@ void classWifiSettings::handleKeyEvent(KeyEvent *pevent) {
             break;
 
         case KEY_2:
-            NetworkManager.setSSID("HobbyHouse", "mansion1");
-            NetworkManager.enable();
-            MainScreen.activate();
-            this->deactivate();
-            break;
-
-        case KEY_3:
             NetworkManager.disable();
             MainScreen.activate();
             this->deactivate();

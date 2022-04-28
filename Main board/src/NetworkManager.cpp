@@ -9,7 +9,7 @@
 #define KETTLE_TOPIC    "alarm/kettle"
 #define NTP_TOPIC       "alarm/ntp"
 
-#define KETTLE_HOST     "192.168.1.5"
+#define KETTLE_HOST     "192.168.68.106"
 #define KETTLE_PORT     1968
 #define KETTLE_URI      "/interface"
 
@@ -19,18 +19,11 @@
 
 classNetworkManager NetworkManager;
 
-const int channel = 11;
-
-const IPAddress address(192, 168, 1, 11);
-const IPAddress gateway(192, 168, 1, 1);
-const IPAddress subnet(255, 255, 255, 0);
-const IPAddress dns(8, 8, 8, 8);
-
 extern RTC_DS3231 rtc;
 
 classNetworkManager::classNetworkManager() {
   disconnectWiFi();
-  Persistent.fetchWiFi(ssid, password, mac, enabled);
+  Persistent.fetchWiFi(ssid, password, enabled);
 
   mqtt.setClient(wifi);
   mqtt.setServer(MQTT_SERVER, MQTT_PORT);
@@ -95,30 +88,19 @@ Exit:
 
 void classNetworkManager::enable() {
   enabled = true;
-  Persistent.storeWiFi(ssid, password, mac, enabled);
+  Persistent.storeWiFi(ssid, password, enabled);
 }
 
 void classNetworkManager::disable() {
   enabled = false;
-  Persistent.storeWiFi(ssid, password, mac, enabled);
+  Persistent.storeWiFi(ssid, password, enabled);
 }
 
 void classNetworkManager::setSSID(const char* pssid, const char *ppassword) {
   strcpy (ssid, pssid);
   strcpy (password, ppassword);
   enabled = true;
-
-  const uint8_t hobbyhouse_mac[] = {0x9C, 0xC9, 0xEB, 0x4E, 0x1B, 0x32};
-  const uint8_t wario_mac[] = {0xF0, 0x86, 0x20, 0x07, 0x53, 0x4C};
-  if (!strcmp(ssid, "HobbyHouse")) {
-    memcpy (mac, hobbyhouse_mac, 6);
-  } else if (!strcmp(ssid, "Wario")) {
-    memcpy (mac, wario_mac, 6);
-  } else {
-    memset (mac, 0x00, 6);
-  }
-
-  Persistent.storeWiFi(ssid, password, mac, enabled);
+  Persistent.storeWiFi(ssid, password, enabled);
 }
 
 void classNetworkManager::getSSID(char *pssid) {
@@ -139,7 +121,6 @@ void classNetworkManager::kettleOn() {
   char body[] = "operation=433&channel=3&command=on";
   int status;
 
-  //strcpy (body, "operation=433&channel=3&command=on");
   Serial.printf ("Sending: %s\n", body);
 
   client.beginRequest();
@@ -160,28 +141,36 @@ Exit:
 bool classNetworkManager::connectWiFi() {
   // TODO Use reference counting in case wifi is being used elsewhere too.
 
+  bool result = false;
+  unsigned long start;
+
   if (!enabled) {
     Serial.println("WiFi disabled");
-    return false;
+    goto exit;
   }
 
-  WiFi.mode(WIFI_STA);
-  WiFi.config(address, gateway, subnet, dns);
-  WiFi.begin(ssid, password, 11, mac, true);
+  WiFi.hostname("Moomin alarm");
+  WiFi.begin(ssid, password);
+  Serial.printf("Connecting to %s ", ssid);
 
-  Serial.printf("Connecting WiFi to %s\n", ssid);
-  unsigned long start = millis();
+  start = millis();
   while (WiFi.status() != WL_CONNECTED) {
-      if (millis() - start > 5000) {
-        Serial.println("Timeout");
-        return false;
+      if (millis() - start > 20000) {
+          Serial.println();
+          Serial.println("Timed out connecting to access point");
+          goto exit;
       }
-      delay(10);
+      delay(100);
+      Serial.print(".");
   }
+  Serial.println();
   Serial.print("Connected, IP address: ");
   Serial.println(WiFi.localIP());
 
-  return true;
+  result = true;
+
+exit:
+  return result;
 }
 
 void classNetworkManager::disconnectWiFi() {

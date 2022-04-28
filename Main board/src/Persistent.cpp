@@ -22,8 +22,7 @@ classPersistent::classPersistent () {
         EEPROM.write(1, 'D');
         storeAlarm(0, 0, false, 1);
 
-        uint8_t default_mac[] = {0, 0, 0, 0, 0, 0};
-        storeWiFi("", "", default_mac, false);
+        storeWiFi("", "", false);
     }
 }
 
@@ -56,25 +55,22 @@ void classPersistent::fetchAlarm(int &hour, int &minute, bool &enabled, int &tun
 struct WiFiSettings {
         char ssid [32];
         char password [32];
-        uint8_t mac[6];
         bool enabled;
 };
 
-void classPersistent::storeWiFi(const char* pssid, const char *ppassword, const uint8_t* pmac, const bool enabled) {
+void classPersistent::storeWiFi(const char* pssid, const char *ppassword, const bool enabled) {
     struct WiFiSettings settings;
     strcpy(settings.ssid, pssid);
     strcpy(settings.password, ppassword);
-    memcpy(settings.mac, pmac, 6);
     settings.enabled = enabled;
     EEPROM.put(WIFI_ADDRESS, settings);
     EEPROM.commit();
 }
 
-void classPersistent::fetchWiFi(char* pssid, char *ppassword, uint8_t* pmac, bool &enabled) {
+void classPersistent::fetchWiFi(char* pssid, char *ppassword, bool &enabled) {
     struct WiFiSettings settings;
     EEPROM.get(WIFI_ADDRESS, settings);
     strcpy(pssid, settings.ssid);
     strcpy(ppassword, settings.password);
-    memcpy(pmac, settings.mac, 6);
     enabled = settings.enabled;
 }
